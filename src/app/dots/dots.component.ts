@@ -22,14 +22,18 @@ export class DotsComponent {
     'Walk dog'
   ];
 
+  drag(event: CdkDragDrop<string[]>) {
+    console.log('event', event);
+  }
+
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       transferArrayItem(event.previousContainer.data,
-          event.container.data,
-          event.previousIndex,
-          event.currentIndex);
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
     }
   }
 }
