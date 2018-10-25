@@ -31,8 +31,8 @@ export class WebSocketService {
     public init(config) {
         this.socket = io(config.server, config);
 
-        this.socket.on('event.one', (object_one) => {
-            console.log('event.one received', object_one);
+        this.socket.on('user.coordinates', (coordinates) => {
+            console.log('user.coordinates received', coordinates);
         });
     }
 

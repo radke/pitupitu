@@ -32,8 +32,9 @@ io.on('connection', function (socket) {
 
     socket.join('channel');
 
-    socket.on('event.savePushNotificationsSubscription', function (subscription) {
-        debug(subscription);
+    socket.on('user.coordinates', function (coordinates) {
+        io.emit('user.coordinates', coordinates);
+        console.log(socket.id, coordinates);
     });
 
     socket.on('disconnect', function () {

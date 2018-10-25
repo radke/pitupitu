@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {Component} from '@angular/core';
+import {CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {WebSocketService} from "../ws.service";
 
 @Component({
   selector: 'app-dots',
@@ -22,8 +23,18 @@ export class DotsComponent {
     'Walk dog'
   ];
 
+  private mouse: any = { move: false };
+
+  constructor(
+      private ws: WebSocketService
+  ) {
+  }
+
   drag(event: CdkDragDrop<string[]>) {
-    console.log('event', event);
+      if ( this.mouse.move ) {
+          this.ws.emit('user.coordinates', event);
+          this.mouse.move = false;
+      }
   }
 
   drop(event: CdkDragDrop<string[]>) {
