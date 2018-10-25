@@ -28,6 +28,9 @@ export class DotsComponent {
   constructor(
       private ws: WebSocketService
   ) {
+    setInterval(() => {
+      this.mouse.move = true;
+    }, 50);
   }
 
   drag(event: CdkDragDrop<string[]>) {
