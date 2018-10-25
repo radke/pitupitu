@@ -30,14 +30,17 @@ io.use(function(socket, next) {
 
 io.on('connection', function (socket) {
 
+  console.log('Connected to channel.')
+
     socket.join('channel');
 
     socket.on('user.coordinates', function (coordinates) {
         io.emit('user.coordinates', coordinates);
-        console.log(socket.id, coordinates);
+        console.log('user.coordinates', socket.id, coordinates);
     });
 
     socket.on('disconnect', function () {
         socket.leave('channel');
+        console.log('Disconnected from channel.')
     })
 });
