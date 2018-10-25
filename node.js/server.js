@@ -4,7 +4,7 @@ const https = require('https');
 // require('ssl-root-cas').inject();
 
 var options = {
-    hostname: 'ws.pitupitu.ovh',
+    hostname: 'pitupitu.ovh',
     port: 4000,
 //    key: fs.readFileSync('ssl/server.key'),
 //    cert: fs.readFileSync('ssl/fullchain.crt')
