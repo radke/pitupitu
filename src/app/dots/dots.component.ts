@@ -24,6 +24,7 @@ export class DotsComponent {
     });
 
     this.ws.onDotsUpdate.subscribe((dots) => {
+      this._dots = {};
       Object.keys(dots).forEach(
         dot_key => {
           this.createAdd(dots[dot_key]);
