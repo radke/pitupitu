@@ -9,13 +9,34 @@ import {WebSocketService} from "../ws.service";
 })
 export class DotsComponent {
 
-  private _dots: any = ['raz', 'dwa'];
+  private _dots: any = {};
   private mouse: any = { move: false };
 
   constructor(
       private ws: WebSocketService
   ) {
-    setInterval(() => { this.mouse.move = true; }, 250);
+      this.ws.onCreateDot.subscribe((socket) => {
+          this.createDot(socket);
+      });
+
+      this.ws.onCoordinates.subscribe((coordinates) => {
+          this.moveDot(coordinates);
+      });
+
+      setInterval(() => { this.mouse.move = true; }, 250);
+  }
+
+    public createDot(socket) {
+        this._dots[socket.id] = socket;
+    }
+
+    public moveDot(coordinates) {
+        this._dots[coordinates.id].x = coordinates.x;
+        this._dots[coordinates.id].y = coordinates.y;
+    }
+
+  get dotsKeys() {
+    return Object.keys(this._dots);
   }
 
   get dots() {

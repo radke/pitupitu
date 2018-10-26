@@ -4,7 +4,7 @@ const http = require('http');
 // require('ssl-root-cas').inject();
 
 var options = {
-    hostname: 'pitupitu.ovh',
+    hostname: 'localhost',
     port: 4000,
 //    key: fs.readFileSync('ssl/server.key'),
 //    cert: fs.readFileSync('ssl/fullchain.crt')
@@ -33,13 +33,21 @@ io.on('connection', function (socket) {
   console.log('Connected to channel.')
 
     socket.join('channel');
+    io.emit('create.dot', {
+        id: socket.id,
+        color: '#ff0000',
+        x: 100,
+        y: 100
+    });
 
     socket.on('user.coordinates', function (coordinates) {
-        io.emit('user.coordinates', coordinates);
+        socket.broadcast.emit('user.coordinates', {id: socket.id, coordinates: coordinates});
+        // io.emit('user.coordinates', {id: socket.id, coordinates: coordinates});
         console.log('user.coordinates', socket.id, coordinates);
     });
 
     socket.on('disconnect', function () {
+//        io.emit('delete.dot', socket.id);
         socket.leave('channel');
         console.log('Disconnected from channel.')
     })
