@@ -2,6 +2,7 @@
 <div *ngFor="let dotIndex of dotsKeys"
      class="dot"
      [style.background]="dots[dotIndex].color"
-     [style.transform]="'translate3d(' + dots[dotIndex].x + 'px, ' + dots[dotIndex].y + 'px, 0px)'"
+     [style.top]="dots[dotIndex].y + 'px'"
+     [style.left]="dots[dotIndex].x + 'px'"
      (cdkDragMoved)="drag($event.pointerPosition)"
      cdkDrag>{{dots[dotIndex].id}}</div>
