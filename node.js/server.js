@@ -30,8 +30,8 @@ io.use(function(socket, next) {
         dots[socket.id] = {
           id: socket.id,
           color: '#dd0000',
-          x: 100,
-          y: 100
+          x: 0,
+          y: 0
         }
       }
 
