@@ -8,7 +8,7 @@ import {Subject} from "rxjs";
 export class WebSocketService {
 
     private socket;
-    private url: string = 'ws://ws.pitupitu.ovh:4000';
+    private url: string = 'ws://ws.pitupitu.ovh';
     private reconnectionAttempts: number = 1000;
 
     private _onDotCreate = new Subject<any>();
