@@ -36,7 +36,7 @@ export class DotsComponent {
       this.moveDot(coordinates);
     });
 
-    setInterval(() => { this.mouse.move = true; }, 250);
+    setInterval(() => { this.mouse.move = true; }, 0);
   }
 
   public createDot(socket) {
