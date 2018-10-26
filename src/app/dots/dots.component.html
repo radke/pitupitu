@@ -2,8 +2,8 @@
 <ng-container *ngFor="let dotIndex of dotsKeys">
 
   <div *ngIf="dots[dotIndex].id == myDotId"
-    class="dot"
-    [style.background]="dots[dotIndex].color"
+    class="dot my"
+    [style.background]="'crimson'"
     [style.top]="dots[dotIndex].y + 'px'"
     [style.left]="dots[dotIndex].x + 'px'"
     (cdkDragMoved)="drag($event.pointerPosition)"
@@ -11,7 +11,7 @@
 
   <div *ngIf="dots[dotIndex].id != myDotId"
      class="dot"
-     [style.background]="dots[dotIndex].color"
+     [style.background]="'#555555'"
      [style.top]="dots[dotIndex].y + 'px'"
      [style.left]="dots[dotIndex].x + 'px'">{{dots[dotIndex].id}}</div>
 </ng-container>
