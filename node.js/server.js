@@ -4,13 +4,13 @@ const http = require('http');
 // require('ssl-root-cas').inject();
 
 var options = {
-    hostname: 'localhost',
+    hostname: 'pitupitu.ovh',
     port: 4000,
 //    key: fs.readFileSync('ssl/server.key'),
 //    cert: fs.readFileSync('ssl/fullchain.crt')
 };
 
-var app = http.createServer(options,handler);
+var app = http.createServer(options, handler);
 var io	= require('socket.io')(app);
 
 app.listen(4000);
@@ -19,36 +19,45 @@ function handler (req, res) {
     res.writeHead(200)
 }
 
+var dots = {};
+
 io.use(function(socket, next) {
     if (socket.request._query.options) {
         var options = JSON.parse(socket.request._query.options);
         socket.dane = options.dane;
 
-        next()
+      if ( !(socket.id in dots) ) {
+        dots[socket.id] = {
+          id: socket.id,
+          color: '#dd0000',
+          x: 100,
+          y:100
+        }
+      }
+
+      next();
     }
 });
 
 io.on('connection', function (socket) {
 
-  console.log('Connected to channel.')
-
     socket.join('channel');
-    io.emit('create.dot', {
-        id: socket.id,
-        color: '#ff0000',
-        x: 100,
-        y: 100
-    });
+    console.log('Socket', socket.id, 'connected to channel');
 
-    socket.on('user.coordinates', function (coordinates) {
-        socket.broadcast.emit('user.coordinates', {id: socket.id, coordinates: coordinates});
-        // io.emit('user.coordinates', {id: socket.id, coordinates: coordinates});
-        console.log('user.coordinates', socket.id, coordinates);
+    socket.emit('dot.create', dots[socket.id]);
+    io.emit('dots.update', dots);
+
+    socket.on('dot.moves', function (coordinates) {
+      dots[socket.id].x = coordinates.x;
+      dots[socket.id].y = coordinates.y;
+      socket.broadcast.emit('dot.moves', dots[socket.id]);
+      console.log('dot.moves', dots[socket.id]);
     });
 
     socket.on('disconnect', function () {
-//        io.emit('delete.dot', socket.id);
-        socket.leave('channel');
-        console.log('Disconnected from channel.')
-    })
+      socket.leave('channel');
+      delete(dots[socket.id]);
+      io.emit('dots.update', dots);
+      console.log('Disconnected from channel.');
+    });
 });

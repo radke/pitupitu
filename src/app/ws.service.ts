@@ -8,14 +8,17 @@ import {Subject} from "rxjs";
 export class WebSocketService {
 
     private socket;
-    private url: string = 'ws://localhost:4000';
+    private url: string = 'ws://ws.pitupitu.ovh:4000';
     private reconnectionAttempts: number = 1000;
 
-    private _onCreateDot = new Subject<any>();
-    public   onCreateDot = this._onCreateDot.asObservable();
+    private _onDotCreate = new Subject<any>();
+    public   onDotCreate = this._onDotCreate.asObservable();
 
-    private _onCoordinates = new Subject<any>();
-    public   onCoordinates = this._onCoordinates.asObservable();
+    private _onDotsUpdate = new Subject<any>();
+    public   onDotsUpdate = this._onDotsUpdate.asObservable();
+
+    private _onDotMoves = new Subject<any>();
+    public   onDotMoves = this._onDotMoves.asObservable();
 
     constructor() {
         let _query = {
@@ -36,22 +39,27 @@ export class WebSocketService {
     }
 
     public init(config) {
-        this.socket = io(config.server, config);
+      this.socket = io(config.server, config);
 
-        this.socket.on('create.dot', (socket) => {
-            console.log('create.dot received', socket);
-            this._onCreateDot.next(socket);
-        });
+      this.socket.on('dot.create', (socket) => {
+        console.log('dot.create received', socket);
+        this._onDotCreate.next(socket);
+      });
 
-        this.socket.on('user.coordinates', (coordinates) => {
-            console.log('user.coordinates received', coordinates);
-            this._onCoordinates.next(coordinates);
-        });
+      this.socket.on('dots.update', (dots) => {
+        console.log('dots.update received', dots);
+        this._onDotsUpdate.next(dots);
+      });
+
+      this.socket.on('dot.moves', (socket) => {
+        console.log('dot.moves received', socket);
+        this._onDotMoves.next(socket);
+      });
     }
 
-    public emit(event, message) {
+    public dotMoves(message) {
         if (this.socket) {
-            this.socket.emit(event, message);
+            this.socket.emit('dot.moves', message);
         }
     }
 }
