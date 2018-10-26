@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
 import {WebSocketService} from "../ws.service";
 
 @Component({
@@ -8,29 +8,18 @@ import {WebSocketService} from "../ws.service";
   styleUrls: ['./dots.component.css'],
 })
 export class DotsComponent {
-  todo = [
-    'Get to work',
-    'Pick up groceries',
-    'Go home',
-    'Fall asleep'
-  ];
 
-  done = [
-    'Get up',
-    'Brush teeth',
-    'Take a shower',
-    'Check e-mail',
-    'Walk dog'
-  ];
-
+  private _dots: any = ['raz', 'dwa'];
   private mouse: any = { move: false };
 
   constructor(
       private ws: WebSocketService
   ) {
-    setInterval(() => {
-      this.mouse.move = true;
-    }, 50);
+    setInterval(() => { this.mouse.move = true; }, 250);
+  }
+
+  get dots() {
+    return this._dots;
   }
 
   drag(event: CdkDragDrop<string[]>) {
@@ -38,16 +27,5 @@ export class DotsComponent {
           this.ws.emit('user.coordinates', event);
           this.mouse.move = false;
       }
-  }
-
-  drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
-    }
   }
 }
