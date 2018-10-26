@@ -42,17 +42,17 @@ export class WebSocketService {
       this.socket = io(config.server, config);
 
       this.socket.on('dot.create', (socket) => {
-        console.log('dot.create received', socket);
+  //      console.log('dot.create received', socket);
         this._onDotCreate.next(socket);
       });
 
       this.socket.on('dots.update', (dots) => {
-        console.log('dots.update received', dots);
+   //     console.log('dots.update received', dots);
         this._onDotsUpdate.next(dots);
       });
 
       this.socket.on('dot.moves', (socket) => {
-        console.log('dot.moves received', socket);
+   //     console.log('dot.moves received', socket);
         this._onDotMoves.next(socket);
       });
     }

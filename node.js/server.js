@@ -31,7 +31,7 @@ io.use(function(socket, next) {
           id: socket.id,
           color: '#dd0000',
           x: 100,
-          y:100
+          y: 100
         }
       }
 
@@ -51,13 +51,13 @@ io.on('connection', function (socket) {
       dots[socket.id].x = coordinates.x;
       dots[socket.id].y = coordinates.y;
       socket.broadcast.emit('dot.moves', dots[socket.id]);
-      console.log('dot.moves', dots[socket.id]);
+//      console.log('dot.moves', dots[socket.id]);
     });
 
     socket.on('disconnect', function () {
       socket.leave('channel');
       delete(dots[socket.id]);
       io.emit('dots.update', dots);
-      console.log('Disconnected from channel.');
+      console.log('Socket', socket.id, 'disconnected from channel.');
     });
 });
