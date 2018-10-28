@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
-import {CdkDragDrop} from '@angular/cdk/drag-drop';
+import {CdkDragMove} from '@angular/cdk/drag-drop';
 import {WebSocketService} from "../ws.service";
-import {forEach} from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-dots',
@@ -65,9 +64,13 @@ export class DotsComponent {
     return this.my_dot.id;
   }
 
-  drag(event: CdkDragDrop<string[]>) {
+  drag(event: CdkDragMove<string[]>) {
       if ( this.mouse.move ) {
-          this.ws.dotMoves(event);
+      //    console.log(event.source.element.nativeElement.getBoundingClientRect());
+          this.ws.dotMoves({
+              x:event.source.element.nativeElement.getBoundingClientRect().left,
+              y:event.source.element.nativeElement.getBoundingClientRect().top
+          });
           this.mouse.move = false;
       }
   }

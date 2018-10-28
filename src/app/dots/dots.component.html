@@ -6,7 +6,7 @@
     [style.background]="'crimson'"
     [style.top]="dots[dotIndex].y + 'px'"
     [style.left]="dots[dotIndex].x + 'px'"
-    (cdkDragMoved)="drag($event.pointerPosition)"
+    (cdkDragMoved)="drag($event)"
     cdkDrag>{{dots[dotIndex].id}}</div>
 
   <div *ngIf="dots[dotIndex].id != myDotId"
